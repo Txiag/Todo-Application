@@ -16,8 +16,22 @@ const List = async (req, res) => {
     limit: itemsPerPage,
     offset: (page - 1) * itemsPerPage,
   });
+  const nextPage =
+    page * itemsPerPage >= itemCount
+      ? null
+      : `http://localhost:8000/todos?page=${
+          Number(page) + 1
+        }&offset=${itemsPerPage}`;
+  const previousPage =
+    page - 1 <= 0
+      ? null
+      : `http://localhost:8000/todos?page=${
+          Number(page) - 1
+        }&offset=${itemsPerPage}`;
   res.json({
     page,
+    nextPage,
+    previousPage,
     itemCount,
     itemsPerPage,
     items,
