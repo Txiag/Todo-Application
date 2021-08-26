@@ -1,5 +1,5 @@
 const { todo } = require("../models");
-const { Op } = require("sequelize");
+const { Op, literal } = require("sequelize");
 const errorMessage = require("../db/errors");
 
 const Create = async (req, res) => {
@@ -14,7 +14,7 @@ const Create = async (req, res) => {
 };
 
 const List = async (req, res) => {
-  const { page = 1, itemsPerPage = 20, q = "" } = req.query; // Pega página e quantidade de itens dos query parameters ou usa default caso não exista
+  const { page = 1, itemsPerPage = 20, q = "", done = null } = req.query; // Pega página e quantidade de itens dos query parameters ou usa default caso não exista
   const { count: itemCount, rows: items } = await todo.findAndCountAll({
     limit: itemsPerPage,
     offset: (page - 1) * itemsPerPage,
@@ -22,9 +22,11 @@ const List = async (req, res) => {
       searchTerm: {
         [Op.substring]: `%${q}%`,
       },
+      done: {
+        [Op.not]: done === null ? null : done.toLowerCase() === "false",
+      },
     },
   });
-
   res.json({
     page,
     itemCount,
@@ -45,12 +47,9 @@ const Edit = async (req, res) => {
   const found = await todo.findByPk(id);
   if (!found) return res.status(404).json({ error: "Não encontrado" }); // Retorna erro caso registro não exista
   delete req.body.id; // Apaga atributo de id no corpo para prevenir sobrescrita
-  delete req.body.searchTerm; // Apaga atributo do termo de busca
   found.dataValues = {
     ...found.dataValues,
     ...req.body,
-    searchTerm: CreateSearchTerm(req.body.title, req.body.description),
-    updatedAt: new Date().toISOString(), // Sobrescreve o updatedAt antigo
   };
   try {
     const edited = await found.save(); // Edita registro
