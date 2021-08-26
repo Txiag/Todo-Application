@@ -4,18 +4,19 @@
   "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "seed": "node ./seed/index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^5.5.3",
+    "lodash.deburr": "^4.1.0",
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12",
-    "sequelize-cli": "^6.2.0"
+    "nodemon": "^2.0.12"
   }
 }
