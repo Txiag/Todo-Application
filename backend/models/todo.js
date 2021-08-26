@@ -54,6 +54,7 @@ const Todo = database.define(
         const title = todo.title || "";
         const description = todo.description || "";
         todo.searchTerm = deburr(title + description);
+        todo.updatedAt = new Date().toISOString();
       },
     },
     defaultScope: {
