@@ -1,12 +1,6 @@
-export const Light = {
-  light: "#fafafa",
-  text: "#474242",
-  secondary: "#189AB4",
-  dark: "#05445E",
-};
-export const Dark = {
-  light: "#fafafa",
-  text: "#474242",
-  secondary: "#189AB4",
-  dark: "#05445E",
+export const DefaultTheme = {
+  light: "#BFD7ED",
+  text: "#60A3D9",
+  secondary: "#0074B7",
+  dark: "#003B73",
 };

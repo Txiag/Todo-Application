@@ -8,6 +8,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
   overflow-x: hidden;
+  padding: 1em 0;
 `;
 export const Column = styled.div`
   display: flex;

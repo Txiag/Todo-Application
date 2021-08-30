@@ -4,13 +4,12 @@ import GlobalStyles from "./styles/globalStyles";
 
 import Routes from "./routes";
 import { ThemeProvider } from "styled-components";
-import { Dark, Light } from "./styles/colors";
+import { DefaultTheme } from "./styles/colors";
 import ToastContainer from "./styles/toastStyles";
 
-const isDarkTheme = true;
 const App = () => (
   <>
-    <ThemeProvider theme={isDarkTheme ? Dark : Light}>
+    <ThemeProvider theme={DefaultTheme}>
       <GlobalStyles />
       <Routes />
       <ToastContainer position="top-center" autoClose={5000} />
