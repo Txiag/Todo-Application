@@ -2,14 +2,16 @@ const faker = require("faker");
 const { todo } = require("../models/index");
 const deburr = require("lodash.deburr");
 const Generate = () => {
-  const title = Math.random() >= 0.9 ? faker.random.words(5) : null;
-  const description = Math.random() <= 0.2 ? null : faker.lorem.paragraph(4);
+  const randomNumber = Math.random();
+  const text = faker.random.words(40);
+  const title = randomNumber >= 0.6 ? text.slice(0, 50) : null;
+  const description = randomNumber <= 0.7 ? text : null;
   const searchTerm = deburr(title || "" + description || "");
   return {
     title,
     description,
     searchTerm,
-    done: Math.random() > 0.6,
+    done: Math.random() >= 0.6,
   };
 };
 

@@ -1,5 +1,4 @@
 const Sequelize = require("sequelize");
-const { isStringOrNull, isBoolean, isNotNull } = require("../db/validators");
 const database = require("../db/sequelize");
 const deburr = require("lodash.deburr");
 
@@ -16,30 +15,15 @@ const Todo = database.define(
       type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null,
-      validate: {
-        isStringOrNull,
-      },
     },
     description: {
       type: Sequelize.STRING,
       allowNull: true,
       defaultValue: null,
-      validate: {
-        isStringOrNull,
-        bothNullOrEmpty: (value) => {
-          if (!value && !this.title)
-            throw new Error(
-              "Campo de descrição e título não podem estar vazios ao mesmo tempo"
-            );
-        },
-      },
     },
     done: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
-      validate: {
-        isBoolean,
-      },
     },
     searchTerm: {
       type: Sequelize.STRING,
@@ -51,9 +35,10 @@ const Todo = database.define(
     hooks: {
       beforeSave(todo) {
         // Hook para adicionar o termo de busca ao salvar um registro
-        const title = todo.title || "";
-        const description = todo.description || "";
-        todo.searchTerm = deburr(title + description);
+
+        todo.title = todo.title?.trim() ? todo.title : null;
+        todo.description = todo.description?.trim() ? todo.description : null;
+        todo.searchTerm = deburr(todo.title || "" + todo.description || "");
         todo.updatedAt = new Date().toISOString();
       },
     },
